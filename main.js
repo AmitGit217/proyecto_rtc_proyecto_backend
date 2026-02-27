@@ -3,11 +3,12 @@ import mongoose from 'mongoose';
 import dotEnv from 'dotenv';
 import bodyParser from 'body-parser';
 import { connectDB } from './config/dbConnect.js';
+import UserRoutes from './entities/user/user.route.js';
 
 dotEnv.config();
 
 const app = express();
-
+app.use('/api/users', UserRoutes);
 connectDB();
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found' });
