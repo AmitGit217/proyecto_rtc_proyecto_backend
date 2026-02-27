@@ -61,7 +61,6 @@ Example fields:
 
 - `title` (String)
 - `description` (String)
-- `createdAt` (Date)
 
 This collection is referenced inside the User model.
 
