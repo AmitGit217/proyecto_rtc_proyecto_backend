@@ -6,15 +6,15 @@ import UserRoutes from './entities/user/user.route.js';
 
 
 import * as nodeDns from "node:dns/promises"
+import seedUsers from './helpers/user.seed.js';
 nodeDns.setServers(["1.1.1.1", "8.8.8.8"]); // Set custom DNS servers, he tenido problemas con el DNS de mi ISP y esto me ha ayudado a resolverlos
-
-
 
 dotEnv.config();
 
 const app = express();
 app.use('/api/users', UserRoutes);
 connectDB();
+seedUsers();
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found' });
 });

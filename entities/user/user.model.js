@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     email: { type: String, require: true, trim: true },
     password: { type: String, require: true, trim: true },
     role: { type: String, require: true, trim: true },
-    image: { type: String, require: true, trim: true },
+    image: { type: String, require: false, trim: true },
     posts: [{ type: mongoose.Types.ObjectId, ref: 'posts'}]
 },{
     timestamps: true,
@@ -19,7 +19,7 @@ userSchema.pre('save', async function (next) {
         return next();
     }
     const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    this.password = bcrypt.hash(this.password, salt);
     next();
 });
 
