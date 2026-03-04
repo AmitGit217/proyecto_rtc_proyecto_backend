@@ -42,7 +42,7 @@ export const getPostById = async (req, res) => {
 export const updatePost = async (req, res) => {
     try {
         const { id } = req.params;
-         const user = req.user;
+        const user = req.user;
         const userPosts = await User.findById(user._id).populate('posts');
         if (!userPosts.posts.some(post => post._id.toString() === id)) {
             return res.status(403).json({ message: 'Forbidden' });
