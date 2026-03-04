@@ -1,5 +1,5 @@
 import User from '../entities/user/user.model.js'
-import { verifyToken } from '../helpers/jwt.js';s
+import { verifyToken } from '../helpers/jwt.js';
 
 const isAuth = async (req, res, next) => {
   const token = req.headers.authorization?.replace('Bearer ', '')
