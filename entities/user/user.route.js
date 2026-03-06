@@ -5,7 +5,7 @@ import {upload} from '../../config/flieStorage.js';
 import isAuth from '../../middlewares/auth.js';
 import isAdmin from '../../middlewares/isAdmin.js';
 
-UserRoutes.post('/', isAuth, isAdmin, upload.single('image'), createUser);
+UserRoutes.post('/', upload.single('image'), createUser);
 UserRoutes.get('/', getUsers);
 UserRoutes.get('/:id', getUserById);
 UserRoutes.put('/:id', isAuth, isAdmin , upload.single('image'), updateUser);

@@ -1,7 +1,7 @@
 import { deleteImgCloudinary } from "../../config/flieStorage.js";
 import User from "./user.model.js";
 
-export const createUser = async (req, res) => {
+export const createUser = async (req, res, next) => {
     try {
         const { userName, email, password, image } = req.body;
         const newUser = new User({ userName, email, password, role: 'user', image });
@@ -11,11 +11,11 @@ export const createUser = async (req, res) => {
         await newUser.save();
         return res.status(201).json(newUser);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        next(error);
     }  
 };
 
-export const loginUser = async (req, res) => {
+export const loginUser = async (req, res, next) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
@@ -29,20 +29,20 @@ export const loginUser = async (req, res) => {
         const token = generateToken(user._id, user.email);
         return res.status(200).json({ token });
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 
-export const getUsers = async (req, res) => {
+export const getUsers = async (req, res, next) => {
     try {
         const users = await User.find().populate('posts');
         return res.status(200).json(users);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 
-export const getUserById = async (req, res) => {
+export const getUserById = async (req, res, next) => {
     try {
         const { id } = req.params;  
         const user = await User.findById(id).populate('posts');
@@ -51,11 +51,11 @@ export const getUserById = async (req, res) => {
         }
         return res.status(200).json(user);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 
-export const updateUser = async (req, res) => {
+export const updateUser = async (req, res, next) => {
     try {
         const { id } = req.params;
         if (req.file) {
@@ -71,11 +71,11 @@ export const updateUser = async (req, res) => {
         }
         return res.status(200).json(updatedUser);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 
-export const deleteUser = async (req, res) => {
+export const deleteUser = async (req, res, next) => {
     try {
         const { id } = req.params;
         const deletedUser = await User.findByIdAndDelete(id);
@@ -85,7 +85,7 @@ export const deleteUser = async (req, res) => {
         deleteImgCloudinary(deletedUser.image);
         return res.status(200).json({ message: 'User deleted successfully' });
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        next(error);
     }
 };  
 

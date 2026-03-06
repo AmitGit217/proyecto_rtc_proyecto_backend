@@ -1,6 +1,8 @@
 import multer from 'multer';
 import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import dotEnv from 'dotenv';
+dotEnv.config();
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -9,19 +11,21 @@ cloudinary.config({
 })
 
 
+
+
 const storage = new CloudinaryStorage({
   cloudinary,
-  params: {
+  params: async (req, file) => ({
     folder: 'UserAvatars',
-    allowedFormats: ['jpg', 'png', 'jpeg', 'gif', 'webp']
-  },
+    allowed_formats: ['jpg', 'png', 'jpeg', 'gif', 'webp'],
+    public_id: `${Date.now()}-${file.originalname}`,
+  }),
 });
 
 const upload = multer({ storage });
 
 
 const deleteImgCloudinary = (imgUrl) => {
-
     const imgSplited = imgUrl.split('/')
     const nameSplited = imgSplited.at(-1).split('.')[0]
     const folderSplited = imgSplited.at(-2);
