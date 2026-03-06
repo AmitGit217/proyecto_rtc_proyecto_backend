@@ -1,10 +1,13 @@
 import { deleteImgCloudinary } from "../../config/flieStorage.js";
+import { generateToken } from "../../helpers/jwt.js";
 import User from "./user.model.js";
+import bcrypt from 'bcrypt';
 
 export const createUser = async (req, res, next) => {
     try {
         const { userName, email, password, image } = req.body;
-        const newUser = new User({ userName, email, password, role: 'user', image });
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = new User({ userName, email, password: hashedPassword, role: 'user', image });
         if (req.file) {
             newUser.image = req.file.path;
         }
@@ -22,11 +25,11 @@ export const loginUser = async (req, res, next) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
-        const token = generateToken(user._id, user.email);
+        const token = generateToken(user._id, user.email, user.role);
         return res.status(200).json({ token });
     } catch (error) {
         next(error);
