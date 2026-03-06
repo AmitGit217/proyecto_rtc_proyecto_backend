@@ -3,8 +3,8 @@ import User from "./user.model.js";
 
 export const createUser = async (req, res) => {
     try {
-        const { userName, email, password, role, image } = req.body;
-        const newUser = new User({ userName, email, password, role, image });
+        const { userName, email, password, image } = req.body;
+        const newUser = new User({ userName, email, password, role: 'user', image });
         if (req.file) {
             newUser.image = req.file.path;
         }
