@@ -85,7 +85,9 @@ export const deleteUser = async (req, res, next) => {
         if (!deletedUser) {
             return res.status(404).json({ message: 'User not found' });
         }
-        deleteImgCloudinary(deletedUser.image);
+        if (deletedUser.image) {
+            deleteImgCloudinary(deletedUser.image);
+        }
         return res.status(200).json({ message: 'User deleted successfully' });
     } catch (error) {
         next(error);

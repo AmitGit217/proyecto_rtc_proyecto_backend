@@ -4,11 +4,7 @@ dotEnv.config();
 import bodyParser from 'body-parser';
 import { connectDB } from './config/dbConnect.js';
 import UserRoutes from './entities/user/user.route.js';
-
-
-import * as nodeDns from "node:dns/promises"
 import PostRoutes from './entities/post/post.route.js';
-nodeDns.setServers(["1.1.1.1", "8.8.8.8"]); // Set custom DNS servers, he tenido problemas con el DNS de mi ISP y esto me ha ayudado a resolverlos
 
 
 const app = express();
