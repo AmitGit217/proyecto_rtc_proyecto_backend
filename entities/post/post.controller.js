@@ -4,8 +4,8 @@ import Post from "./post.model.js";
 
 export const createPost = async (req, res) => {
     try {
-        const { title, description } = req.body;
-        const newPost = new Post({ title, description });
+        const { title, description, owner } = req.body;
+        const newPost = new Post({ title, description, owner });
         if (req.file) {
             newPost.image = req.file.path;
         }
