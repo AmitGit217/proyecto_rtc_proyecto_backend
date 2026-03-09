@@ -14,6 +14,9 @@ export const createUser = async (req, res, next) => {
         await newUser.save();
         return res.status(201).json(newUser);
     } catch (error) {
+          if (error.code === 11000) {
+            return res.status(400).json({ message: "Email already exists" });
+        }
         next(error);
     }  
 };
