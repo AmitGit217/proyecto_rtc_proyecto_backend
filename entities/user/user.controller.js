@@ -1,4 +1,4 @@
-import { deleteImgCloudinary } from "../../config/flieStorage.js";
+import { deleteImgCloudinary } from "../../config/fileStorage.js";
 import { generateToken } from "../../helpers/jwt.js";
 import User from "./user.model.js";
 import bcrypt from 'bcrypt';
