@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     image: { type: String, required: false, trim: true },
     posts: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "posts"
+        ref: "posts", 
     }]
 },{
     timestamps: true,

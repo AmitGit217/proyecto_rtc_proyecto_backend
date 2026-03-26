@@ -4,15 +4,22 @@ import Post from "./post.model.js";
 
 export const createPost = async (req, res) => {
     try {
-        const { title, description, owner } = req.body;
-        const newPost = new Post({ title, description, owner });
+        const { title, description } = req.body;
+        const user = req.user; 
+
+        const newPost = new Post({ title, description });
         await newPost.save();
+
+    
+        await User.findByIdAndUpdate(user._id, {
+            $push: { posts: newPost._id }
+        });
+
         return res.status(201).json(newPost);
     } catch (error) {
         return res.status(500).json({ message: error.message });
-    }  
+    }
 };
-
 
 export const getPosts = async (req, res) => {
     try {
@@ -58,20 +65,23 @@ export const deletePost = async (req, res) => {
     try {
         const { id } = req.params;
         const user = req.user;
+
         const userPosts = await User.findById(user._id).populate('posts');
         if (!userPosts.posts.some(post => post._id.toString() === id)) {
             return res.status(403).json({ message: 'Forbidden' });
         }
-        const deletedPost = await Post.findByIdAndDelete(id);
+
+        const deletedPost = await Post.findByIdAndDelete(id); 
         if (!deletedPost) {
             return res.status(404).json({ message: 'Post not found' });
         }
+
         deleteImgCloudinary(deletedPost.image);
         return res.status(200).json({ message: 'Post deleted successfully' });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
-};  
+};
 
 
 
