@@ -11,7 +11,7 @@ const postSchema = new mongoose.Schema({
 
 const Post = mongoose.model('posts', postSchema, 'posts');
 
-Post.post('findOneAndDelete', async function(deletedPost) {
+postSchema.pre('findOneAndDelete', async function(deletedPost) {
     if (deletedPost) {
         const User = mongoose.model('User'); 
         await User.findByIdAndUpdate(deletedPost.author, {

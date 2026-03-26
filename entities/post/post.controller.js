@@ -1,4 +1,4 @@
-import { deleteImgCloudinary } from "../../config/flieStorage.js";
+import { deleteImgCloudinary } from "../../config/fileStorage.js";
 import User from "../user/user.model.js";
 import Post from "./post.model.js";
 
@@ -75,8 +75,6 @@ export const deletePost = async (req, res) => {
         if (!deletedPost) {
             return res.status(404).json({ message: 'Post not found' });
         }
-
-        deleteImgCloudinary(deletedPost.image);
         return res.status(200).json({ message: 'Post deleted successfully' });
     } catch (error) {
         return res.status(500).json({ message: error.message });

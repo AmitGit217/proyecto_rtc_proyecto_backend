@@ -1,7 +1,7 @@
 import express from 'express';
 const UserRoutes = express.Router();
 import { createUser, getUsers, getUserById, updateUser, deleteUser, loginUser } from './user.controller.js';
-import {upload} from '../../config/flieStorage.js';
+import {upload} from '../../config/fileStorage.js';
 import isAuth from '../../middlewares/auth.js';
 import isAdmin from '../../middlewares/isAdmin.js';
 
