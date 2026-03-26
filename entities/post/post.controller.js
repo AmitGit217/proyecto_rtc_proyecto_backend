@@ -6,9 +6,6 @@ export const createPost = async (req, res) => {
     try {
         const { title, description, owner } = req.body;
         const newPost = new Post({ title, description, owner });
-        if (req.file) {
-            newPost.image = req.file.path;
-        }
         await newPost.save();
         return res.status(201).json(newPost);
     } catch (error) {

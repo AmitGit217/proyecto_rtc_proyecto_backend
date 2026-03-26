@@ -6,8 +6,7 @@ import bcrypt from 'bcrypt';
 export const createUser = async (req, res, next) => {
     try {
         const { userName, email, password, image } = req.body;
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ userName, email, password: hashedPassword, image });
+        const newUser = new User({ userName, email, password: password, image });
         if (req.file) {
             newUser.image = req.file.path;
         }
