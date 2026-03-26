@@ -34,7 +34,7 @@ Fields:
 - `password` (String, hashed)
 - `role` (String, default: "user")
 - `image` (String – Cloudinary URL)
-- `relatedData` (Array of ObjectIds referencing another collection)
+- `posts` (Array of ObjectIds referencing another collection)
 
 ### Rules
 
@@ -49,13 +49,13 @@ Fields:
 - Admins can delete any account.
 - When a user is deleted:
   - Their Cloudinary image is also deleted.
-- The `relatedData` array:
+- The `posts` array:
   - Does not allow duplicates.
   - New entries do not overwrite previous data.
 
 ---
 
-### 2. Related Model (Example: Item / Post / Favorite)
+### 2. Post Model 
 
 Example fields:
 
@@ -103,13 +103,10 @@ This inserts predefined documents into the selected collection.
 
 ~~~
 /config
-/models
-/routes
-/controllers
+/entities
+/helpers
 /middleware
-/utils
-/seed
-server.js
+main.js
 .env
 ~~~
 
@@ -132,8 +129,7 @@ npm install
 3. Create `.env` file with:
 
 ~~~
-PORT=
-MONGODB_URI=
+DB_URI=
 JWT_SECRET=
 CLOUDINARY_NAME=
 CLOUDINARY_API_KEY=

@@ -9,6 +9,10 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true, trim: true },
     role: { type: String, required: true, trim: true, default: 'user' },
     image: { type: String, required: false, trim: true },
+    posts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "posts"
+    }]
 },{
     timestamps: true,
 })
