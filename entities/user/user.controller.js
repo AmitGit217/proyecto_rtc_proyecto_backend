@@ -67,10 +67,9 @@ export const updateUser = async (req, res, next) => {
         if (req.file) {
             req.body.image = req.file.path;
         }
-        const userToUpdate = await User.findById(id);
-        const updatedUser = await User.updateOne({ _id: id }, req.body, { new: true });
+        const updatedUser = await User.findByIdAndUpdate({ _id: id }, req.body, { new: true });
         if (req.file && updatedUser.image) {
-            deleteImgCloudinary(userToUpdate.image);
+            deleteImgCloudinary(updatedUser.image);
         }
         if (!updatedUser) {
             return res.status(404).json({ message: 'User not found' });
