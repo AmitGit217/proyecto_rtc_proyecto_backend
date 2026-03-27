@@ -63,16 +63,26 @@ export const getUserById = async (req, res, next) => {
 export const updateUser = async (req, res, next) => {
     try {
         const { id } = req.params;
+
         if (req.file) {
             req.body.image = req.file.path;
         }
-        const updatedUser = await User.findByIdAndUpdate({ _id: id }, req.body, { new: true });
-        if (req.file && updatedUser.image) {
-            deleteImgCloudinary(updatedUser.image);
-        }
-        if (!updatedUser) {
+
+        const existingUser = await User.findById(id);
+        if (!existingUser) {
             return res.status(404).json({ message: 'User not found' });
         }
+
+        if (req.file && existingUser.image) {
+            deleteImgCloudinary(existingUser.image);
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(
+            { _id: id },
+            req.body,
+            { returnDocument: 'after' }
+        );
+
         return res.status(200).json(updatedUser);
     } catch (error) {
         next(error);

@@ -51,7 +51,7 @@ export const updatePost = async (req, res) => {
         if (!userPosts.posts.some(post => post._id.toString() === id)) {
             return res.status(403).json({ message: 'Forbidden' });
         }
-        const updatedPost = await Post.updateOne({ _id: id }, req.body, { new: true });
+        const updatedPost = await Post.updateOne({ _id: id }, req.body, { returnDocument: 'after' });
         if (!updatedPost) {
             return res.status(404).json({ message: 'Post not found' });
         }
