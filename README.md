@@ -53,6 +53,8 @@ Fields:
   - Does not allow duplicates.
   - New entries do not overwrite previous data.
 
+
+
 ---
 
 ### 2. Post Model 
@@ -65,6 +67,25 @@ Example fields:
 This collection is referenced inside the User model.
 
 ---
+
+## Endpoints
+
+- **User Endpoints**:
+  - `POST /api/users` – Register a new user
+  - `POST /api/users/login` – User login
+  - `GET /api/users` – Get all users (admin only)
+  - `GET /api/users/:id` – Get user by ID (admin or self)
+  - `PUT /api/users/:id` – Update user (admin or self)
+  - `DELETE /api/users/:id` – Delete user (admin or self)
+
+  - **Post Endpoints** (example):
+    - `POST /api/posts` – Create a new post (authenticated users)
+    - `GET /api/posts` – Get all posts (public)
+    - `GET /api/posts/:id` – Get post by ID (public)
+    - `PUT /api/posts/:id` – Update post (authenticated users)
+    - `DELETE /api/posts/:id` – Delete post (authenticated users)
+
+
 
 ## Authentication & Authorization
 
