@@ -1,4 +1,3 @@
-import { deleteImgCloudinary } from "../../config/fileStorage.js";
 import User from "../user/user.model.js";
 import Post from "./post.model.js";
 
