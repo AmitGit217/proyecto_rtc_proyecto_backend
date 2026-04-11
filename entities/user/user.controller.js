@@ -85,6 +85,8 @@ export const updateUser = async (req, res, next) => {
         const posts = existingUser.posts;
         req.body.posts = [...posts, ...(req.body.posts || [])];
 
+        
+
         const updatedUser = await User.findByIdAndUpdate(
             { _id: id },
             req.body,
