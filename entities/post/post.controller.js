@@ -2,22 +2,28 @@ import User from "../user/user.model.js";
 import Post from "./post.model.js";
 
 export const createPost = async (req, res) => {
-    try {
-        const { title, description, author } = req.body;
-        const user = req.user; 
-
-        const newPost = new Post({ title, description, author: user._id });
-        await newPost.save();
-
-    
-        await User.findByIdAndUpdate(user._id, {
-            $push: { posts: newPost._id }
-        });
-
-        return res.status(201).json(newPost);
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
+  try {
+    if (!req.user) {
+      return res.status(401).json("Unauthorized");
     }
+
+    const { title, description } = req.body;
+
+    const newPost = await Post.create({
+      title,
+      description,
+      author: req.user._id
+    });
+
+    await User.findByIdAndUpdate(req.user._id, {
+      $addToSet: { posts: newPost._id }
+    });
+
+    return res.status(201).json(newPost);
+
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 };
 
 export const getPosts = async (req, res) => {

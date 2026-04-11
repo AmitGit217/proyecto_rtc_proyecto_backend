@@ -67,37 +67,48 @@ export const getUserById = async (req, res, next) => {
 };
 
 export const updateUser = async (req, res, next) => {
-    try {
-        const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-        if (req.file) {
-            req.body.image = req.file.path;
-        }
-
-        const existingUser = await User.findById(id);
-        if (!existingUser) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        if (req.file && existingUser.image) {
-            deleteImgCloudinary(existingUser.image);
-        }
-        const posts = existingUser.posts;
-        req.body.posts = [...posts, ...(req.body.posts || [])];
-
-        
-
-        const updatedUser = await User.findByIdAndUpdate(
-            { _id: id },
-            req.body,
-            { returnDocument: 'after' }
-        );
-        const { password, ...userWithoutPassword } = updatedUser.toObject();
-
-        return res.status(200).json(userWithoutPassword);
-    } catch (error) {
-        next(error);
+    if (!req.user) {
+      return res.status(401).json("Unauthorized");
     }
+
+    const existingUser = await User.findById(id);
+    if (!existingUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (req.file) {
+      req.body.image = req.file.path;
+
+      if (existingUser.image) {
+        deleteImgCloudinary(existingUser.image);
+      }
+    }
+
+    const updateData = { ...req.body };
+
+    if (req.body.posts) {
+      updateData.$addToSet = {
+        posts: { $each: req.body.posts }
+      };
+      delete updateData.posts;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      updateData,
+      { new: true }
+    );
+
+    const { password, ...userWithoutPassword } = updatedUser.toObject();
+
+    return res.status(200).json(userWithoutPassword);
+
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const deleteUser = async (req, res, next) => {
