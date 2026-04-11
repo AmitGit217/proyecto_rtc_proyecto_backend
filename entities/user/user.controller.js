@@ -76,6 +76,8 @@ export const updateUser = async (req, res, next) => {
         if (req.file && existingUser.image) {
             deleteImgCloudinary(existingUser.image);
         }
+        const posts = existingUser.posts;
+        req.body.posts = [...posts, ...(req.body.posts || [])];
 
         const updatedUser = await User.findByIdAndUpdate(
             { _id: id },
