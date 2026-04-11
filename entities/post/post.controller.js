@@ -4,10 +4,10 @@ import Post from "./post.model.js";
 
 export const createPost = async (req, res) => {
     try {
-        const { title, description } = req.body;
+        const { title, description, author } = req.body;
         const user = req.user; 
 
-        const newPost = new Post({ title, description });
+        const newPost = new Post({ title, description, author: user._id });
         await newPost.save();
 
     
