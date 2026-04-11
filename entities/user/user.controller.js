@@ -112,18 +112,40 @@ export const updateUser = async (req, res, next) => {
 };
 
 export const deleteUser = async (req, res, next) => {
-    try {
-        const { id } = req.params;
-        const deletedUser = await User.findByIdAndDelete(id);
-        if (!deletedUser) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        if (deletedUser.image) {
-            deleteImgCloudinary(deletedUser.image);
-        }
-        return res.status(200).json({ message: 'User deleted successfully' });
-    } catch (error) {
-        next(error);
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    const { id } = req.params;
+
+    const user = await User.findById(id).session(session);
+    if (!user) {
+      await session.abortTransaction();
+      session.endSession();
+      return res.status(404).json({ message: 'User not found' });
     }
-};  
+
+    // delete related posts
+    await Post.deleteMany({ author: id }).session(session);
+
+    // delete user
+    await User.findByIdAndDelete(id).session(session);
+
+    // commit DB first
+    await session.commitTransaction();
+    session.endSession();
+
+    // delete image AFTER commit (external service)
+    if (user.image) {
+      await deleteImgCloudinary(user.image);
+    }
+
+    return res.status(200).json({ message: 'User deleted successfully' });
+
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    next(error);
+  }
+};
 

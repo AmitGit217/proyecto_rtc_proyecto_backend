@@ -20,16 +20,14 @@ const storage = new CloudinaryStorage({
 const upload = multer({ storage });
 
 
-const deleteImgCloudinary = (imgUrl) => {
-    const imgSplited = imgUrl.split('/')
-    const nameSplited = imgSplited.at(-1).split('.')[0]
-    const folderSplited = imgSplited.at(-2);
-    const public_id = `${folderSplited}/${nameSplited}`;
+const deleteImgCloudinary = async (imgUrl) => {
+  const parts = imgUrl.split('/');
+  const fileName = parts.at(-1).split('.')[0];
+  const folder = parts.at(-2);
+  const public_id = `${folder}/${fileName}`;
 
-    cloudinary.uploader.destroy(public_id, () => {
-        console.log('Image delete in cloudinary')
-    })
-}
+  return await cloudinary.uploader.destroy(public_id);
+};
 
 export { upload , deleteImgCloudinary };
 
