@@ -11,7 +11,8 @@ export const createUser = async (req, res, next) => {
             newUser.image = req.file.path;
         }
         await newUser.save();
-        return res.status(201).json(newUser);
+        const { password: _, ...userWithoutPassword } = newUser.toObject();
+        return res.status(201).json(userWithoutPassword);
     } catch (error) {
           if (error.code === 11000) {
             return res.status(400).json({ message: "Email already exists" });
@@ -41,7 +42,11 @@ export const loginUser = async (req, res, next) => {
 export const getUsers = async (req, res, next) => {
     try {
         const users = await User.find().populate('posts');
-        return res.status(200).json(users);
+        const usersWithoutPasswords = users.map(user => {
+            const { password, ...userWithoutPassword } = user.toObject();
+            return userWithoutPassword;
+        });
+        return res.status(200).json(usersWithoutPasswords);
     } catch (error) {
         next(error);
     }
@@ -54,7 +59,8 @@ export const getUserById = async (req, res, next) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        return res.status(200).json(user);
+        const { password, ...userWithoutPassword } = user.toObject();
+        return res.status(200).json(userWithoutPassword);
     } catch (error) {
         next(error);
     }
@@ -84,8 +90,9 @@ export const updateUser = async (req, res, next) => {
             req.body,
             { returnDocument: 'after' }
         );
+        const { password, ...userWithoutPassword } = updatedUser.toObject();
 
-        return res.status(200).json(updatedUser);
+        return res.status(200).json(userWithoutPassword);
     } catch (error) {
         next(error);
     }
