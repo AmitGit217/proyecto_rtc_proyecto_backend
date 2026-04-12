@@ -1,13 +1,16 @@
-const isAdmin = (req, res, next) => {
+const isAdminOrOwner = (req, res, next) => {
   if (!req.user) {
     return res.status(401).json("Unauthorized");
   }
 
-  if (req.user.role !== 'admin') {
-    return res.status(403).json("Forbidden");
+  const isAdmin = req.user.role === 'admin';
+  const isOwner = req.user._id.toString() === req.params.id;
+
+  if (isAdmin || isOwner) {
+    return next();
   }
 
-  next();
+  return res.status(403).json("Forbidden");
 };
 
-export default isAdmin;
+export default isAdminOrOwner;
