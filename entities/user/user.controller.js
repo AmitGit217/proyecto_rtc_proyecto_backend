@@ -2,6 +2,8 @@ import { deleteImgCloudinary } from "../../config/fileStorage.js";
 import { generateToken } from "../../helpers/jwt.js";
 import User from "./user.model.js";
 import bcrypt from 'bcrypt';
+import mongoose from "mongoose";
+import Post from "../post/post.model.js";
 
 export const createUser = async (req, res, next) => {
     try {
@@ -125,17 +127,13 @@ export const deleteUser = async (req, res, next) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // delete related posts
     await Post.deleteMany({ author: id }).session(session);
 
-    // delete user
     await User.findByIdAndDelete(id).session(session);
 
-    // commit DB first
     await session.commitTransaction();
     session.endSession();
 
-    // delete image AFTER commit (external service)
     if (user.image) {
       await deleteImgCloudinary(user.image);
     }
