@@ -6,10 +6,11 @@ import isAuth from '../../middlewares/auth.js';
 import isAdmin from '../../middlewares/isAdminOrOwner.js';
 
 UserRoutes.post('/', upload.single('image'), createUser);
+UserRoutes.post('/login', loginUser);
 UserRoutes.get('/', getUsers);
 UserRoutes.get('/:id', getUserById);
 UserRoutes.put('/:id', isAuth, isAdmin , upload.single('image'), updateUser);
 UserRoutes.delete('/:id', isAuth, isAdmin, deleteUser);
-UserRoutes.post('/login', loginUser);
+
 
 export default UserRoutes;
