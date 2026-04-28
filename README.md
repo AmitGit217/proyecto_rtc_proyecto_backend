@@ -70,25 +70,30 @@ This collection is referenced inside the User model.
 
 ## Endpoints
 
-- **User Endpoints**:
-| Method | Endpoint         | Description         | Access        |
-| ------ | ---------------- | ------------------- | ------------- |
-| POST   | /api/users       | Register a new user | Public        |
-| POST   | /api/users/login | User login          | Public        |
-| GET    | /api/users       | Get all users       | Public  |
-| GET    | /api/users/:id   | Get user by ID      | Admin or self |
-| PUT    | /api/users/:id   | Update user         | Admin or self |
-| DELETE | /api/users/:id   | Delete user         | Admin or self |
+## Endpoints
 
-  - **Post Endpoints** (example):
-| Method | Endpoint       | Description       | Access              |
-| ------ | -------------- | ----------------- | ------------------- |
-| POST   | /api/posts     | Create a new post | Authenticated users |
-| GET    | /api/posts     | Get all posts     | Public              |
-| GET    | /api/posts/:id | Get post by ID    | Public              |
-| PUT    | /api/posts/:id | Update post       | Authenticated users |
-| DELETE | /api/posts/:id | Delete post       | Authenticated users |
+### User Endpoints
 
+| Method | Endpoint           | Description         | Access        |
+|--------|--------------------|---------------------|---------------|
+| POST   | /api/users         | Register a new user | Public        |
+| POST   | /api/users/login   | User login          | Public        |
+| GET    | /api/users         | Get all users       | Public        |
+| GET    | /api/users/:id     | Get user by ID      | Admin or self |
+| PUT    | /api/users/:id     | Update user         | Admin or self |
+| DELETE | /api/users/:id     | Delete user         | Admin or self |
+
+---
+
+### Post Endpoints (example)
+
+| Method | Endpoint         | Description       | Access              |
+|--------|------------------|-------------------|---------------------|
+| POST   | /api/posts       | Create a new post | Authenticated users |
+| GET    | /api/posts       | Get all posts     | Public              |
+| GET    | /api/posts/:id   | Get post by ID    | Public              |
+| PUT    | /api/posts/:id   | Update post       | Authenticated users |
+| DELETE | /api/posts/:id   | Delete post       | Authenticated users |
 
 
 ## Authentication & Authorization
