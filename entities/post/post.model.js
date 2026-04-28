@@ -13,7 +13,6 @@ const postSchema = new mongoose.Schema({
     timestamps: true,
 })
 
-const Post = mongoose.model('posts', postSchema, 'posts');
 
 postSchema.pre('findOneAndDelete', async function(deletedPost) {
     if (deletedPost) {
@@ -23,6 +22,10 @@ postSchema.pre('findOneAndDelete', async function(deletedPost) {
         });
     }
 });
+
+const Post = mongoose.model('posts', postSchema, 'posts');
+
+
 
 
 

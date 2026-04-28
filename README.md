@@ -75,7 +75,7 @@ This collection is referenced inside the User model.
 | ------ | ---------------- | ------------------- | ------------- |
 | POST   | /api/users       | Register a new user | Public        |
 | POST   | /api/users/login | User login          | Public        |
-| GET    | /api/users       | Get all users       | Admin only    |
+| GET    | /api/users       | Get all users       | Public  |
 | GET    | /api/users/:id   | Get user by ID      | Admin or self |
 | PUT    | /api/users/:id   | Update user         | Admin or self |
 | DELETE | /api/users/:id   | Delete user         | Admin or self |
