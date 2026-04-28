@@ -6,10 +6,12 @@ const isAdminOrOwner = (req, res, next) => {
   const isAdmin = req.user.role === 'admin';
   const isOwner = req.user._id.toString() === req.params.id;
 
-  if (isAdmin || isOwner) {
-    if (isOwner && req.body.role && req.body.role !== 'user') {
+  if (isOwner && req.body.role && req.body.role !== 'user' && !isAdmin) {
       return res.status(403).json("Forbidden");
     }
+
+  if (isAdmin || isOwner) {
+    
     return next();
   }
 
