@@ -14,15 +14,14 @@ const postSchema = new mongoose.Schema({
 })
 
 
-postSchema.pre('findOneAndDelete', async function(deletedPost) {
-    if (deletedPost) {
-        const User = mongoose.model('users'); 
-        await User.findByIdAndUpdate(deletedPost.author, {
-            $pull: { posts: deletedPost._id }
+postSchema.post('findOneAndDelete', async function(doc) {
+    if (doc) {
+        const User = mongoose.model('users');
+        await User.findByIdAndUpdate(doc.author, {
+            $pull: { posts: doc._id }
         });
     }
 });
-
 const Post = mongoose.model('posts', postSchema, 'posts');
 
 
